@@ -1,9 +1,7 @@
-### Hi there 👋
+# sijen dangol 👋
 
-`enthusiast to learn new things`
+I'm sijen from NEPAL and i do content related to web development and design. i really enjoy learning languages like react as well as i work in wordpress. You can check out my linkedin account at https://www.linkedin.com/in/sijen-dangol-406a44187/
+## skills 
 
-- 🔭 I’m currently working on html,css and javascript
-- 🌱 I’m currently learning web development and web designing
-- 📫 How to reach me: sijendangol1@gmail.com
-
+SKILLS :HTML / CSS / JS 
 [![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=sijen)](https://github.com/anuraghazra/github-readme-stats)
