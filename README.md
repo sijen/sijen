@@ -10,4 +10,4 @@ Skills: JS / HTML / CSS
 
  
 
-[![Anurag's GitHub stats](https://github-readme-stats.vercel.app/api?username=sijen)](https://github.com/anuraghazra/github-readme-stats)
+[![willianrod's wakatime stats](https://github-readme-stats.vercel.app/api/wakatime?username=sijen)](https://github.com/anuraghazra/github-readme-stats)
