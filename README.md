@@ -1,5 +1,5 @@
 # sijen dangol
-#### I'm sijen from NEPAL and i do content related to web development and design. i really enjoy learning languages like react as well as i work in wordpress. You can check out my linkedin account at
+#### I'm sijen from NEPAL and i do content related to web development and design. i really enjoy learning languages like react as well as i work in wordpress. You can check out my linkedin account at https://www.linkedin.com/in/sijen-dangol-406a44187/
 
 Skills: JS / HTML / CSS 
  
