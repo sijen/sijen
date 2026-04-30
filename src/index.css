@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+
+:root {
+  --xdr-critical: 0 92% 59%;
+  --xdr-high: 24 95% 58%;
+  --xdr-medium: 51 98% 60%;
+  --xdr-low: 142 70% 55%;
+  --xdr-info: 216 98% 56%;
+}
+
+* {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: #0A0F1A;
+  color: #E5E7EB;
+  font-weight: 400;
+}
+
+#root {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+/* XDR Subtle Glassmorphism */
+@layer components {
+  .glassXDR {
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid #1F2937;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+  
+  .glassXDR-hover {
+    background: rgba(17, 24, 39, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid #1F2937;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  .glassXDR-hover:hover {
+    border-color: rgb(59 130 246 / 0.5);
+    box-shadow: 0 8px 32px rgb(59 130 246 / 0.2), 0 4px 20px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  .shadow-control-room {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+.sev-critical { 
+  color: hsl(var(--xdr-critical)); 
+  animation: sev-pulse 2s infinite;
+  text-shadow: 0 0 8px hsl(var(--xdr-critical));
+}
+.sev-high { color: hsl(var(--xdr-high)); }
+.sev-medium { color: hsl(var(--xdr-medium)); }
+.sev-low { color: hsl(var(--xdr-low)); }
+.sev-info { color: hsl(var(--xdr-info)); }
+
+/* XDR Scrollbar */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+*::-webkit-scrollbar-track {
+  background: #111827;
+}
+*::-webkit-scrollbar-thumb {
+  background: #1F2937;
+  border-radius: 3px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #3B82F6;
+}
+
+/* Utility Shadows */
+.shadow-control-room {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Responsive Text */
+@layer utilities {
+  .text-xdr-xl { font-size: clamp(1.25rem, 4vw, 2rem); }
+  .text-xdr-2xl { font-size: clamp(1.875rem, 5vw, 3rem); }
+}
+
+/* Live Feed Animation (subtle slide) */
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.alert-slide {
+  animation: slide-in-right 0.4s ease-out;
+}
+
