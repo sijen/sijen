@@ -167,7 +167,7 @@ export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProp
     const onMouseMove = (event: MouseEvent) => {
       if (!containerRef.current || !cameraRef.current) return;
       
-      const rect = containerRef.current.getBoundingClientRect();
+      // const rect = containerRef.current.getBoundingClientRect();
       updateMousePosition(event.clientX, event.clientY);
       
       // Update raycaster
