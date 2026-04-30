@@ -91,7 +91,7 @@ export default function Contact() {
         <div className="mt-8 pt-6 border-t border-xdr-border text-center">
           <p className="text-xs text-xdr-muted">
             Or reach me at: <br />
-            <a href="mailto:sijen@example.com" className="text-xdr-info hover:underline">sijen@example.com</a>
+            <a href="mailto:sijendangol@gmail.com" className="text-xdr-info hover:underline">sijendangol1@gmail.com</a>
           </p>
         </div>
       </div>

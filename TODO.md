@@ -1,39 +1,32 @@
-# Personal Portfolio Conversion TODO
+# TODO - Fix ThreatGlobe Issues - COMPLETED
 
-**Approved Plan: Convert XDR dashboard to Sijen's personal portfolio site.**
+## Task:
+Fix the Three.js globe that is:
+1. Not rotating while scrolling and dragging
+2. Not displaying tooltip on hover in Threat News section
 
-## Steps (from approved plan):
+## Fixes Implemented:
 
-### 1. Create src/data/portfolio.ts with personal data [COMPLETE]
-   - Bio, work experience, Leo club roles/achievements, volunteering.
-   - Projects, certifications (TBD).
+### 1. Fix scroll rotation (wheel event)
+- ✅ Changed `{ passive: true }` to `{ passive: false }` for wheel event
+- ✅ Added `e.preventDefault()` to properly handle scroll rotation
 
-### 2. Update src/components/layout/Sidebar.tsx [COMPLETE]
-   - Personal nav: Home (/), Projects (/projects), Leo Club (/leo), Certifications (/certs), Experience (/experience), Contact (/contact).
-   - Header: Use logo.png, "Sijen's Portfolio".
+### 2. Fix drag rotation
+- ✅ Initialized mouse position on component mount (via setTimeout)
+- ✅ Event listeners properly attached from start
 
-### 3. Update src/components/layout/Topbar.tsx [COMPLETE]
-   - Personal title/logo, search for projects/experience.
+### 3. Fix hover tooltip display
+- ✅ Initialize mouse position at center of container on mount
+- ✅ Ensure raycasting works correctly from initial state
 
-### 4. Update src/pages/Dashboard/index.tsx → Home [PENDING]
-   - Hero bio.
-   - Stats: Leo roles, volunteer hours/projects.
-   - Live feed → Recent Leo activities/projects.
-   - Timeline → Leo club journey/work experience.
+## Status: COMPLETED ✅
 
-### 5. Update src/App.tsx [PENDING]
-   - Route / → Dashboard (home).
-   - Add stubs/routes for /projects (Alerts), /leo, /experience (Logs), /contact (Login), /skills (IPTracker).
+## Build Status: SUCCESS ✅
+- Build output created in dist/ folder
+- Project compiles without errors
 
-### 6. Edit src/data/xdr.ts [PENDING]
-   - Export portfolio data or deprecate XDR.
-
-### 7. Minor: index.html title, theme tweaks [PENDING]
-
-### 8. Test & Next [PENDING]
-   - `npm run dev`
-   - Repurpose other pages.
-   - Add CV download.
-
-**Progress: Steps 1-4 complete. Updated Dashboard to personal home with bio, Leo activities, experience. Sidebar/Topbar humanized. Routes updated for / (home), /projects, /skills, /experience, /contact.**
-
+## Notes:
+The fixes ensure:
+1. Globe rotates when scrolling (mouse wheel)
+2. Globe rotates when dragging (click and move)
+3. Tooltip displays correctly when hovering over threat markers

@@ -4,11 +4,12 @@ import { NavLink } from "react-router-dom";
 import { portfolioStats } from '../../data/portfolio';
 
 const navItems = [
-  { icon: "🏠", label: "Home", path: "/dashboard" },
-  { icon: "💼", label: "Experience", path: "/experience" },
+  { icon: "🏠", label: "Home", path: "/home" },
   { icon: "🚀", label: "Projects", path: "/projects" },
-  { icon: "❤️", label: "Leo Club", path: "/leo" },
+  { icon: "🧪", label: "Security Lab", path: "/lab" },
+  { icon: "🦁", label: "Leo Club", path: "/leo" },
   { icon: "🏆", label: "Certifications", path: "/certs" },
+  { icon: "📝", label: "Blog", path: "/blog" },
   { icon: "📧", label: "Contact", path: "/contact" },
 ];
 

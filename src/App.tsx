@@ -1,11 +1,10 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Sidebar from "./components/layout/Sidebar";
 import Topbar from "./components/layout/Topbar";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
-import Alerts from "./pages/Alerts"; // Repurposed as Projects
-import IPTracker from "./pages/IPTracker"; // Repurposed as Skills
-import Logs from "./pages/Logs"; // Repurposed as Experience
+import Home from "./pages/Home";
+import Leo from "./pages/Leo";
+import Lab from "./pages/Lab";
 
 function MainContent() {
   return (
@@ -13,13 +12,17 @@ function MainContent() {
       <Topbar />
       <main className="flex-1 overflow-y-auto p-6 md:p-8 bg-xdr-bg">
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/projects" element={<Alerts />} />
-          <Route path="/skills" element={<IPTracker />} />
-          <Route path="/experience" element={<Logs />} />
-          <Route path="/leo" element={<div>Leo Club details page (TBD)</div>} />
-          <Route path="/certs" element={<div>Certifications page (TBD)</div>} />
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/dashboard" element={<Home />} />
+          <Route path="/experience" element={<Home />} />
+          <Route path="/projects" element={<Home />} />
+          <Route path="/skills" element={<Home />} />
+          <Route path="/leo" element={<Leo />} />
+          <Route path="/lab" element={<Lab />} />
+          <Route path="/security" element={<Lab />} />
+          <Route path="/certs" element={<div>Certifications page (Coming soon)</div>} />
+          <Route path="/blog" element={<div>Blog page (Coming soon)</div>} />
           <Route path="/contact" element={<Login />} />
           <Route path="*" element={<div>Page not found</div>} />
         </Routes>

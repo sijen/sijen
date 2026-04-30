@@ -1,12 +1,28 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import LiveFeed from "../../components/ui/LiveFeed";
 import StatCard from "../../components/ui/StatCard";
-import MitreTag from "../../components/ui/MitreTag";
 import { sampleAlerts, xdrStats } from "../../data/xdr";
 import { useState } from "react";
 
 import type { AlertEvent } from "../../data/xdr";
+
+// LiveFeed component placeholder
+function LiveFeed() {
+  return (
+    <div className="glassXDR p-4 rounded-xl">
+      <p className="text-xdr-muted text-sm">Live feed placeholder</p>
+    </div>
+  );
+}
+
+// MitreTag component placeholder
+function MitreTag({ id }: { id: string }) {
+  return (
+    <span className="text-xs px-2 py-1 rounded bg-xdr-info/20 text-xdr-info">
+      {id}
+    </span>
+  );
+}
 
 const AlertsPage = () => {
   const [filterSeverity, setFilterSeverity] = useState<string>('ALL');
