@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import ImpactCounter from '../../components/ui/ImpactCounter';
+import Gallery from '../../components/Gallery';
 import { leoRoles, experienceTimeline } from '../../data/portfolio';
 
 const leoStats = [
@@ -109,28 +110,15 @@ export default function Leo() {
         </div>
       </section>
 
-      {/* Service Projects Gallery - placeholder */}
-      <section className="glassXDR p-6 rounded-xl">
-        <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
+{/* Service Projects Gallery */}
+      <section className="glassXDR p-4 sm:p-6 rounded-xl">
+        <h2 className="text-lg sm:text-xl font-semibold mb-4 flex items-center space-x-2">
           <span>📸</span>
           <span>Service Highlights</span>
         </h2>
         
-        <p className="text-xdr-muted">
-          Photo gallery coming soon. Meanwhile, check out my key achievements above!
-        </p>
-        
-        {/* Placeholder gallery grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div
-              key={i}
-              className="aspect-square bg-xdr-panel rounded-lg flex items-center justify-center text-xdr-muted"
-            >
-              📷 {i}
-            </div>
-          ))}
-        </div>
+        {/* Gallery Component */}
+        <Gallery />
       </section>
     </motion.div>
   );

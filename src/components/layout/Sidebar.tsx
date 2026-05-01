@@ -8,10 +8,6 @@ const navSections = [
     label: "MAIN",
     items: [
       { icon: "🏠", label: "Home", path: "/dashboard" },
-      { icon: "👤", label: "About", path: "/about" },
-      { icon: "💼", label: "Experience", path: "/experience" },
-      { icon: "🚀", label: "Projects", path: "/projects" },
-      { icon: "⚡", label: "Skills", path: "/skills" },
     ],
   },
   {
