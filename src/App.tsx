@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Leo from "./pages/Leo";
 import Lab from "./pages/Lab";
+import Certs from "./pages/Certs";
 
 function MainContent() {
   return (
@@ -21,7 +22,7 @@ function MainContent() {
           <Route path="/leo" element={<Leo />} />
           <Route path="/lab" element={<Lab />} />
           <Route path="/security" element={<Lab />} />
-          <Route path="/certs" element={<div>Certifications page (Coming soon)</div>} />
+<Route path="/certs" element={<Certs />} />
           <Route path="/blog" element={<div>Blog page (Coming soon)</div>} />
           <Route path="/contact" element={<Login />} />
           <Route path="*" element={<div>Page not found</div>} />
