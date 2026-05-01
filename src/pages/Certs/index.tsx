@@ -198,20 +198,20 @@ function ProfessionalCard({ cert, index }: { cert: ProfessionalCert; index: numb
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <motion.div
+<motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      whileHover={{ scale: 1.03 }}
+      whileHover={{ scale: 1.02 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="glassXDR p-5 rounded-2xl border border-xdr-border hover:border-xdr-info/50 transition-all duration-300 group"
+      className="glassXDR p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-xdr-border hover:border-xdr-info/50 transition-all duration-300 group"
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-3 sm:mb-4">
         {/* Issuer Badge */}
         <div
-          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
+          className="w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white font-bold text-xs sm:text-sm"
           style={{ backgroundColor: cert.color }}
         >
           {cert.issuer.slice(0, 2).toUpperCase()}
@@ -220,23 +220,23 @@ function ProfessionalCard({ cert, index }: { cert: ProfessionalCert; index: numb
       </div>
 
       {/* Certification Name */}
-      <h3 className="text-lg font-semibold text-xdr-text mb-1">{cert.name}</h3>
+      <h3 className="text-base sm:text-lg font-semibold text-xdr-text mb-1">{cert.name}</h3>
 
       {/* Issuing Organization */}
-      <p className="text-xdr-muted text-sm mb-3">{cert.issuer}</p>
+      <p className="text-xdr-muted text-xs sm:text-sm mb-2 sm:mb-3">{cert.issuer}</p>
 
       {/* Date */}
-      <div className="flex items-center gap-2 text-xdr-muted text-sm mb-3">
-        <Calendar className="w-4 h-4" />
-        <span>Date obtained: {cert.date}</span>
+      <div className="flex items-center gap-2 text-xdr-muted text-xs sm:text-sm mb-2 sm:mb-3">
+        <Calendar className="w-3 h-3 sm:w-4 sm:h-4" />
+        <span className="truncate">Date obtained: {cert.date}</span>
       </div>
 
       {/* Credential ID */}
       {cert.credentialId && (
-        <div className="flex items-center gap-2 text-sm mb-4">
-          <span className="text-xdr-muted">Credential ID:</span>
+        <div className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm mb-3 sm:mb-4">
+          <span className="text-xdr-muted whitespace-nowrap">Credential ID:</span>
           <span
-            className={`font-mono px-2 py-0.5 rounded ${
+            className={`font-mono px-1 sm:px-2 py-0.5 rounded text-xs truncate max-w-[120px] sm:max-w-none ${
               isHovered ? 'bg-xdr-panel text-xdr-text' : 'bg-xdr-panel text-xdr-muted blur-[2px] group-hover:blur-0'
             } transition-all`}
           >
@@ -251,11 +251,12 @@ function ProfessionalCard({ cert, index }: { cert: ProfessionalCert; index: numb
           href={cert.verifyUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-xdr-info/20 text-xdr-info rounded-lg hover:bg-xdr-info/30 transition-colors text-sm font-medium"
+          className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 bg-xdr-info/20 text-xdr-info rounded-lg hover:bg-xdr-info/30 transition-colors text-xs sm:text-sm font-medium"
         >
-          <Shield className="w-4 h-4" />
-          Verify Credential
-          <ExternalLink className="w-3 h-3" />
+          <Shield className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="hidden sm:inline">Verify Credential</span>
+          <span className="sm:hidden">Verify</span>
+          <ExternalLink className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
         </a>
       )}
     </motion.div>
@@ -268,31 +269,31 @@ function ProfessionalCard({ cert, index }: { cert: ProfessionalCert; index: numb
 
 function LeoAwardCard({ award, index }: { award: LeoAward; index: number }) {
   return (
-    <motion.div
+<motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, duration: 0.5 }}
-      whileHover={{ scale: 1.03 }}
-      className="glassXDR p-5 rounded-2xl border-l-4 border-amber-500 hover:border-amber-400 transition-all duration-300"
+      whileHover={{ scale: 1.02 }}
+      className="glassXDR p-4 sm:p-5 rounded-xl sm:rounded-2xl border-l-4 border-amber-500 hover:border-amber-400 transition-all duration-300"
     >
       {/* Trophy Icon + Year */}
-      <div className="flex items-center gap-3 mb-4">
-        <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
-          <Trophy className="w-5 h-5 text-amber-500" />
+      <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-amber-500/20 flex items-center justify-center">
+          <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-amber-500" />
         </div>
-        <span className="px-3 py-1 rounded-full bg-amber-500/20 text-amber-500 text-sm font-medium">
+        <span className="px-2 sm:px-3 py-1 rounded-full bg-amber-500/20 text-amber-500 text-xs sm:text-sm font-medium">
           {award.year}
         </span>
       </div>
 
       {/* Award Name */}
-      <h3 className="text-lg font-semibold text-xdr-text mb-1">{award.name}</h3>
+      <h3 className="text-base sm:text-lg font-semibold text-xdr-text mb-1">{award.name}</h3>
 
       {/* Organization */}
-      <p className="text-xdr-muted text-sm mb-2">Issued by: {award.org}</p>
+      <p className="text-xdr-muted text-xs sm:text-sm mb-1 sm:mb-2">Issued by: {award.org}</p>
 
       {/* Description */}
-      <p className="text-xdr-text text-sm">{award.desc}</p>
+      <p className="text-xdr-text text-xs sm:text-sm">{award.desc}</p>
     </motion.div>
   );
 }
@@ -311,11 +312,11 @@ export default function Certs() {
     { label: 'Leo Awards', value: leoAwardsCount },
   ];
 
-  return (
+return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="space-y-8 px-2 md:px-4 py-4 max-w-6xl mx-auto"
+      className="space-y-6 sm:space-y-8 px-3 sm:px-4 py-3 sm:py-4 max-w-6xl mx-auto"
     >
       {/* ============================================ */}
       {/* PAGE HEADER */}
@@ -324,29 +325,29 @@ export default function Certs() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-center py-8"
+        className="text-center py-4 sm:py-6 md:py-8"
       >
-        <h1 className="text-3xl md:text-4xl font-bold mb-4">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 sm:mb-4">
           <span className="text-xdr-info">Certifications</span> & Awards
         </h1>
-        <p className="text-xdr-muted text-lg mb-8">
+        <p className="text-xdr-muted text-sm sm:text-lg mb-6 sm:mb-8">
           Professional credentials & volunteer recognition
         </p>
 
-        {/* Stats Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {/* Stats Row - Mobile Optimized */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 md:gap-4">
           {stats.map((stat, index) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="glassXDR p-4 rounded-xl text-center"
+              className="glassXDR p-3 sm:p-4 rounded-lg sm:rounded-xl text-center"
             >
-              <div className="text-2xl md:text-3xl font-bold text-xdr-info mb-1">
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-xdr-info mb-1">
                 <AnimatedCounter value={stat.value} />
               </div>
-              <div className="text-xs md:text-sm text-xdr-muted uppercase tracking-wider">
+              <div className="text-xs sm:text-xs md:text-sm text-xdr-muted uppercase tracking-wider">
                 {stat.label}
               </div>
             </motion.div>
@@ -355,13 +356,13 @@ export default function Certs() {
       </motion.section>
 
       {/* ============================================ */}
-      {/* TAB SWITCHER */}
+      {/* TAB SWITCHER - Mobile Optimized */}
       {/* ============================================ */}
-      <div className="flex justify-center mb-8">
-        <div className="glassXDR p-1 rounded-xl flex gap-1">
+      <div className="flex justify-center mb-6 sm:mb-8">
+        <div className="glassXDR p-1 rounded-xl flex flex-col sm:flex-row gap-1 w-full sm:w-auto">
           <button
             onClick={() => setActiveTab('professional')}
-            className={`px-6 py-3 rounded-lg font-medium transition-all ${
+            className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 rounded-lg font-medium transition-all text-sm sm:text-base ${
               activeTab === 'professional'
                 ? 'bg-xdr-info/20 text-xdr-info border-b-2 border-xdr-info'
                 : 'text-xdr-muted hover:text-xdr-text'
@@ -371,7 +372,7 @@ export default function Certs() {
           </button>
           <button
             onClick={() => setActiveTab('leo')}
-            className={`px-6 py-3 rounded-lg font-medium transition-all ${
+            className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 rounded-lg font-medium transition-all text-sm sm:text-base ${
               activeTab === 'leo'
                 ? 'bg-amber-500/20 text-amber-500 border-b-2 border-amber-500'
                 : 'text-xdr-muted hover:text-xdr-text'

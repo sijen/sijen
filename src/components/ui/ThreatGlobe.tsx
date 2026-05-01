@@ -134,7 +134,7 @@ const [isLoaded, setIsLoaded] = useState(false);
     // Prime meridian ring
     const meridianGeometry = new THREE.TorusGeometry(1.005, 0.003, 8, 64);
     const meridianMaterial = new THREE.MeshBasicMaterial({
-      color: 0x06B6D4,
+      color: "#0078d4",
       transparent: true,
       opacity: 0.4,
     });
