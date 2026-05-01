@@ -7,6 +7,7 @@ import { securityNewsData, getSeverityColor, getSeverityBgColor, type ThreatLoca
 interface ThreatGlobeProps {
   className?: string;
   onHover?: (location: ThreatLocation | null) => void;
+  onClick?: (location: ThreatLocation | null) => void;
 }
 
 function latLngToVector3(lat: number, lng: number, radius: number): THREE.Vector3 {
@@ -20,7 +21,7 @@ function latLngToVector3(lat: number, lng: number, radius: number): THREE.Vector
   return new THREE.Vector3(x, y, z);
 }
 
-export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProps) {
+export default function ThreatGlobe({ className = '', onHover, onClick }: ThreatGlobeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -31,16 +32,24 @@ export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProp
   const raycasterRef = useRef<THREE.Raycaster>(new THREE.Raycaster());
   const mouseRef = useRef<THREE.Vector2>(new THREE.Vector2());
   const isMountedRef = useRef<boolean>(false);
-  const [isLoaded, setIsLoaded] = useState(false);
+const [isLoaded, setIsLoaded] = useState(false);
   const [hoveredLocation, setHoveredLocation] = useState<ThreatLocation | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<ThreatLocation | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
 
-  // Call onHover callback when hoveredLocation changes
+// Call onHover callback when hoveredLocation changes
   useEffect(() => {
     if (onHover) {
       onHover(hoveredLocation);
     }
   }, [hoveredLocation, onHover]);
+
+  // Call onClick callback when selectedLocation changes
+  useEffect(() => {
+    if (onClick) {
+      onClick(selectedLocation);
+    }
+  }, [selectedLocation, onClick]);
 
   // Track mouse position for raycasting
   const updateMousePosition = useCallback((clientX: number, clientY: number) => {
@@ -209,8 +218,41 @@ export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProp
       }
     };
 
-    // Add event listener to the canvas element
+// Add event listener to the canvas element
     renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+    // Handle click for selection
+    const onClick = (event: MouseEvent) => {
+      if (!containerRef.current || !cameraRef.current) return;
+      
+      updateMousePosition(event.clientX, event.clientY);
+      
+      // Update raycaster
+      raycasterRef.current.setFromCamera(mouseRef.current, cameraRef.current);
+      
+      // Check marker intersections
+      const intersects = raycasterRef.current.intersectObjects(markersRef.current, false);
+      
+      // Find clicked marker
+      let clickedMarker: THREE.Mesh | null = null;
+      for (const intersect of intersects) {
+        const obj = intersect.object as THREE.Mesh;
+        if (obj.userData && obj.userData.locationData) {
+          clickedMarker = obj;
+          break;
+        }
+      }
+      
+      if (clickedMarker) {
+        const locationData = clickedMarker.userData.locationData as ThreatLocation;
+        setSelectedLocation(locationData);
+      } else {
+        // Click on empty space clears selection
+        setSelectedLocation(null);
+      }
+    };
+
+    renderer.domElement.addEventListener('click', onClick);
 
     // Animation loop
     let animationId: number;
@@ -240,11 +282,12 @@ export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProp
 
     window.addEventListener('resize', handleResize);
 
-    // Cleanup
+// Cleanup
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
       renderer.domElement.removeEventListener('mousemove', onMouseMove);
+      renderer.domElement.removeEventListener('click', onClick);
       
       if (controlsRef.current) {
         controlsRef.current.dispose();
@@ -279,8 +322,8 @@ export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProp
         </div>
       )}
       
-      {/* Tooltip - shows on hover with cybersecuritynews.com sources */}
-      {hoveredLocation && (
+{/* Tooltip - shows on click or hover with cybersecuritynews.com sources */}
+      {(selectedLocation || hoveredLocation) && (
         <div 
           className="fixed z-50 pointer-events-none"
           style={{
@@ -294,7 +337,7 @@ export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProp
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 rounded-full bg-xdr-critical animate-pulse"></div>
                 <span className="font-semibold text-white text-sm">
-                  {hoveredLocation.city}, {hoveredLocation.country}
+                  {(selectedLocation || hoveredLocation)!.city}, {(selectedLocation || hoveredLocation)!.country}
                 </span>
               </div>
               <span className="text-xs text-cyber-text-muted">Source: cybersecuritynews.com</span>
@@ -302,7 +345,7 @@ export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProp
             
             {/* News Items */}
             <div className="space-y-2 max-h-[200px] overflow-y-auto">
-              {hoveredLocation.news.map((news) => (
+              {(selectedLocation || hoveredLocation)!.news.map((news) => (
                 <a
                   key={news.id}
                   href={news.sourceUrl}
@@ -336,7 +379,7 @@ export default function ThreatGlobe({ className = '', onHover }: ThreatGlobeProp
             
             {/* Footer */}
             <div className="mt-2 pt-2 border-t border-xdr-border/20 flex items-center justify-between text-xs text-cyber-text-muted">
-              <span>{hoveredLocation.news.length} threat{hoveredLocation.news.length > 1 ? 's' : ''}</span>
+              <span>{(selectedLocation || hoveredLocation)!.news.length} threat{(selectedLocation || hoveredLocation)!.news.length > 1 ? 's' : ''}</span>
               <span className="flex items-center space-x-1">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />

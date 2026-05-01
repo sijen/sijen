@@ -12,7 +12,7 @@ interface PasswordResult {
 export default function Lab() {
   const [password, setPassword] = useState('');
   const [result, setResult] = useState<PasswordResult | null>(null);
-  const [hoveredLocation, setHoveredLocation] = useState<ThreatLocation | null>(null);
+  const [selectedLocation, setSelectedLocation] = useState<ThreatLocation | null>(null);
 
   const analyzePassword = (pwd: string): PasswordResult => {
     const feedback: string[] = [];
@@ -117,17 +117,17 @@ export default function Lab() {
             <span>🌍</span>
             <span>Live Threat Visualizer</span>
           </h2>
-          <ThreatGlobe onHover={setHoveredLocation} />
+<ThreatGlobe onClick={setSelectedLocation} />
         </section>
 
-        {/* News Display Panel - shows when hovering globe pointers */}
+{/* News Display Panel - shows when clicking globe pointers */}
         <section className="glassXDR p-6 rounded-xl">
           <h2 className="text-xl font-semibold mb-4 flex items-center space-x-2">
             <span>📰</span>
             <span>Threat News</span>
           </h2>
           
-          {hoveredLocation ? (
+          {selectedLocation ? (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -138,7 +138,7 @@ export default function Lab() {
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 rounded-full bg-xdr-critical animate-pulse"></div>
                   <span className="font-semibold text-white">
-                    {hoveredLocation.city}, {hoveredLocation.country}
+                    {selectedLocation.city}, {selectedLocation.country}
                   </span>
                 </div>
                 <span className="text-xs text-xdr-muted">Source: cybersecuritynews.com</span>
@@ -146,7 +146,7 @@ export default function Lab() {
               
               {/* News Items */}
               <div className="space-y-3 max-h-[300px] overflow-y-auto">
-                {hoveredLocation.news.map((news) => (
+                {selectedLocation.news.map((news) => (
                   <a
                     key={news.id}
                     href={news.sourceUrl}
@@ -180,7 +180,7 @@ export default function Lab() {
               
               {/* Footer */}
               <div className="pt-3 border-t border-xdr-border/20 flex items-center justify-between text-sm text-xdr-muted">
-                <span>{hoveredLocation.news.length} threat{hoveredLocation.news.length > 1 ? 's' : ''} reported</span>
+                <span>{selectedLocation.news.length} threat{selectedLocation.news.length > 1 ? 's' : ''} reported</span>
                 <span className="flex items-center space-x-1">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -191,7 +191,7 @@ export default function Lab() {
             </motion.div>
           ) : (
             <div className="text-center py-8 text-xdr-muted">
-              <p>Hover over the threat globe pointers to view cybersecurity news</p>
+              <p>Click on the threat globe pointers to view cybersecurity news</p>
               <p className="text-sm mt-2">Drag or scroll to rotate the globe</p>
             </div>
           )}
