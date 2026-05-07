@@ -1,0 +1,307 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .quiz-wrap { padding: 1rem 0; }
+  .progress-bar { height: 4px; background: var(--color-border-tertiary); border-radius: 2px; margin-bottom: 1.5rem; overflow: hidden; }
+  .progress-fill { height: 100%; background: #1565C0; border-radius: 2px; transition: width 0.4s ease; }
+  .q-counter { font-size: 13px; color: #B3C7E6; margin-bottom: 0.5rem; }
+  .q-text { font-size: 18px; font-weight: 500; color: #E5E7EB; line-height: 1.5; margin-bottom: 1.5rem; }
+  .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+
+  /* Option buttons */
+  .opt-btn {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-lg);
+    padding: 14px 16px;
+    font-size: 14px;
+    /* ensure text has enough contrast on the quiz background */
+    color: #E5E7EB;
+    cursor: pointer;
+    text-align: left;
+    line-height: 1.4;
+    display: flex; align-items: flex-start; gap: 10px;
+    transition: background 0.15s, border-color 0.15s;
+    position: relative;
+  }
+
+  .opt-btn:hover:not(:disabled) { background: var(--color-background-secondary); border-color: var(--color-border-primary); }
+
+  .opt-label { font-weight: 500; font-size: 15px; min-width: 20px; color: var(--color-text-secondary); }
+
+  /* Selected (before reveal) */
+  .opt-btn.selected {
+    background: var(--color-background-secondary);
+    border: 1.5px solid var(--color-border-primary);
+    color: var(--color-text-primary);
+  }
+  .opt-btn.selected .opt-label {
+    color: var(--color-text-primary);
+  }
+
+  .opt-btn.correct { background: #E8F5E9; border: 1.5px solid #2E7D32; color: #1B5E20; }
+  .opt-btn.correct .opt-label { color: #2E7D32; }
+  .opt-btn.wrong { background: #FFEBEE; border: 1.5px solid #C62828; color: #B71C1C; }
+  .opt-btn.wrong .opt-label { color: #C62828; }
+  .opt-btn:disabled { cursor: default; }
+  .action-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .btn-reveal {
+    background: #1565C0; color: #fff; border: none; border-radius: var(--border-radius-md);
+    padding: 10px 20px; font-size: 14px; font-weight: 500; cursor: pointer;
+    transition: background 0.15s, opacity 0.15s;
+  }
+  .btn-reveal:hover { background: #0D47A1; }
+  .btn-reveal:disabled { opacity: 0.4; cursor: default; }
+  .btn-next {
+    background: var(--color-background-primary); border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md); padding: 10px 20px; font-size: 14px; color: #FFFFFF;
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-next:hover { background: var(--color-background-secondary); }
+  .explanation {
+    margin-top: 1rem; padding: 12px 14px;
+    background: var(--color-background-secondary);
+    border-left: 3px solid #1565C0;
+    border-radius: 0 var(--border-radius-md) var(--border-radius-md) 0;
+    font-size: 13px; color: var(--color-text-secondary); line-height: 1.6;
+    display: none;
+  }
+  .score-screen { text-align: center; padding: 2rem 0; }
+  .score-big { font-size: 56px; font-weight: 500; color: var(--color-text-primary); line-height: 1; }
+  .score-sub { font-size: 16px; color: var(--color-text-secondary); margin-top: 8px; }
+  .score-badge { display: inline-block; margin-top: 1.5rem; padding: 8px 20px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+  .badge-great { background: #E8F5E9; color: #1B5E20; }
+  .badge-good { background: #E3F2FD; color: #0D47A1; }
+  .badge-retry { background: #FFF3E0; color: #E65100; }
+  .btn-restart { margin-top: 1.5rem; background: #1565C0; color: #fff; border: none; border-radius: var(--border-radius-md); padding: 10px 22px; font-size: 14px; cursor: pointer; }
+  .btn-restart:hover { background: #0D47A1; }
+  .slide-tag { display: inline-block; font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--color-background-info); color: var(--color-text-info); margin-bottom: 0.75rem; font-weight: 500; }
+</style>
+
+<div class="quiz-wrap" role="main">
+  <h2 class="sr-only" style="color: white;">Cybersecurity awareness quiz for class 8, 9 and 10 students</h2>
+  <div id="quiz-area"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    slide: "Slide 2 — Why Cybersecurity Matters",
+    q: "Which of the following is a real cyber threat faced by Nepali students?",
+    opts: ["Slow internet speed", "Fake TikTok giveaway links stealing game credentials", "Power cuts affecting devices", "Expensive mobile data"],
+    answer: 1,
+    explain: "Fake giveaway links (like Free Fire diamond offers) are a common phishing method used to steal account credentials in Nepal."
+  },
+  {
+    slide: "Slide 2 — Why Cybersecurity Matters",
+    q: "What kind of information do cybercriminals most commonly try to steal?",
+    opts: ["Your favourite music playlist", "Your class timetable", "Passwords and banking credentials", "Your homework files"],
+    answer: 2,
+    explain: "Cybercriminals target passwords and financial credentials (like eSewa logins) because they can be used to steal money or access accounts."
+  },
+  {
+    slide: "Slide 3 — Strong Passwords",
+    q: 'Which of these is the STRONGEST password?',
+    opts: ['"Hari123"', '"nepal2010"', '"!#MySecretP@ssword2026"', '"freefire"'],
+    answer: 2,
+    explain: "A strong password is 12+ characters long and uses a mix of uppercase, lowercase, numbers, and special symbols. The others are short, predictable, or use personal information."
+  },
+  {
+    slide: "Slide 3 — Strong Passwords",
+    q: "Why should you use a different password for each online account?",
+    opts: ["To confuse your friends", "If one password is stolen, other accounts stay safe", "Because websites force you to", "To practise your memory"],
+    answer: 1,
+    explain: "Reusing passwords is dangerous — if a hacker gets one password, they can access all your accounts. Unique passwords limit the damage of any single breach."
+  },
+  {
+    slide: "Slide 4 — Phishing",
+    q: 'You receive an SMS: "Your eSewa account is blocked. Click here to verify." What should you do?',
+    opts: ["Click the link immediately", "Share it with friends", "Ignore and verify via the official eSewa app directly", "Reply with your account details"],
+    answer: 2,
+    explain: "This is a classic phishing SMS. Always verify account issues through the official app or website — never through a link sent in an SMS or email."
+  },
+  {
+    slide: "Slide 4 — Phishing",
+    q: "What does 'phishing' mean in cybersecurity?",
+    opts: ["A type of online game", "Fake messages designed to steal your personal information", "Downloading music illegally", "Fishing using a smartphone app"],
+    answer: 1,
+    explain: "Phishing is when criminals send fake emails, SMS, or messages that look official to trick you into giving away your passwords, OTPs, or banking details."
+  },
+  {
+    slide: "Slide 5 — Social Media Safety",
+    q: "What is the safest setting for your social media profile?",
+    opts: ["Public — so everyone can follow you", "Private — only friends can see your posts", "Friends of friends", "No privacy setting needed"],
+    answer: 1,
+    explain: "Keeping your profile private limits who can see your personal photos, location, and information, reducing the risk of stalking, scams, and catfishing."
+  },
+  {
+    slide: "Slide 5 — Social Media Safety",
+    q: "A celebrity account sends you a friend request and asks for your personal photo. You should:",
+    opts: ["Send the photo — it could be real!", "Accept and reply politely", "Ignore or report it — it is likely a fake account", "Share their message with other friends"],
+    answer: 2,
+    explain: "Celebrities rarely send personal friend requests. Fake accounts use celebrity photos to build trust before requesting personal information or photos for blackmail."
+  },
+  {
+    slide: "Slide 6 — Gaming Safety",
+    q: 'A website claims to offer a "Free Fire diamond hack tool". What should you do?',
+    opts: ["Download it — free diamonds!", "Download only if it has good reviews", "Never download it — it is likely malware", "Share the link with your gaming friends"],
+    answer: 2,
+    explain: "Hack tools and cheat mods from unknown websites almost always contain malware. They can steal your data, passwords, or even lock your device."
+  },
+  {
+    slide: "Slide 6 — Gaming Safety",
+    q: "Your best friend asks for your Free Fire account password to gift you diamonds. You should:",
+    opts: ["Share it — they are your best friend", "Share only if they promise not to change it", "Never share it — not even with close friends", "Share it, then change it after"],
+    answer: 2,
+    explain: "Account passwords must never be shared with anyone. Friends can unknowingly expose your password or deliberately misuse it. Use official gift/top-up systems only."
+  },
+  {
+    slide: "Slide 7 — Cyber Laws",
+    q: "Under Nepal's Electronic Transactions Act (ETA) 2063, what can happen to someone who hacks another person's account?",
+    opts: ["Nothing — it is just the internet", "A warning letter only", "Up to 2 years imprisonment and a fine", "They lose their social media account"],
+    answer: 2,
+    explain: "Nepal's ETA 2063 treats hacking, data theft, and related crimes seriously. Offenders can face up to 2 years in prison and substantial fines."
+  },
+  {
+    slide: "Slide 7 — Cyber Laws",
+    q: "Which of these activities is ILLEGAL under Nepali cyber law?",
+    opts: ["Posting a birthday photo", "Sharing a funny meme", "Spreading fake news about someone online", "Commenting on a YouTube video"],
+    answer: 2,
+    explain: "Spreading false information online (fake news), cyberbullying, and blackmailing are all illegal under Nepal's cyber laws and can result in criminal charges."
+  },
+  {
+    slide: "Slide 8 — What To Do",
+    q: "If someone is blackmailing you online using your personal photo, your FIRST step should be:",
+    opts: ["Pay what they demand", "Delete all your social media accounts", "Stay calm and tell a trusted adult immediately", "Confront the person online yourself"],
+    answer: 2,
+    explain: "Never panic or pay. Immediately tell a parent, teacher, or trusted adult. You can also report to Nepal Police Cyber Bureau — cyberbureaunepal.gov.np."
+  },
+  {
+    slide: "Slide 8 — What To Do",
+    q: "Where can you officially report cybercrime in Nepal?",
+    opts: ["Your school's Facebook page", "Nepal Police Cyber Bureau", "TikTok support chat", "Any local police station only"],
+    answer: 1,
+    explain: "The Nepal Police Cyber Bureau (cyberbureaunepal.gov.np) handles all online crimes including harassment, fraud, and blackmail. You can report via their website or social media."
+  },
+  {
+    slide: "Slide 9 — Security Checklist",
+    q: "Which combination gives you the BEST account security?",
+    opts: ["Strong password only", "Two-factor authentication (2FA) only", "Strong unique password + Two-factor authentication", "Writing your password on paper"],
+    answer: 2,
+    explain: "Using both a strong unique password AND 2FA (one-time codes sent to your phone) gives two layers of protection. Even if a hacker gets your password, they still cannot get in without the code."
+  }
+];
+
+let current = 0;
+let revealed = false;
+let score = 0;
+let answered = false;
+let selected = -1;
+
+function render() {
+  const area = document.getElementById('quiz-area');
+  if (current >= questions.length) {
+    renderScore(area);
+    return;
+  }
+  const q = questions[current];
+  const pct = Math.round((current / questions.length) * 100);
+  area.innerHTML = `
+    <div class="progress-bar"><div class="progress-fill" id="pf" style="width:${pct}%"></div></div>
+    <div class="q-counter">Question ${current + 1} of ${questions.length}</div>
+    <div class="slide-tag" style="color:#38bdf8;"> <i class="ti ti-presentation" aria-hidden="true"></i> ${q.slide}</div>
+    <div class="q-text">${q.q}</div>
+    <div class="options-grid" id="opts">
+      ${q.opts.map((o, i) => `
+        <button class="opt-btn" id="opt${i}" onclick="selectOpt(${i})" aria-label="Option ${String.fromCharCode(65+i)}: ${o}">
+          <span class="opt-label">${String.fromCharCode(65+i)}</span>
+          <span>${o}</span>
+        </button>`).join('')}
+    </div>
+    <div class="action-row">
+      <button class="btn-reveal" id="btn-reveal" onclick="revealAnswer()" ${revealed ? 'disabled' : ''}>
+        <i class="ti ti-eye" aria-hidden="true"></i> ${revealed ? 'Answer shown' : 'Show answer'}
+      </button>
+      <button class="btn-next" onclick="nextQ()">
+        ${current < questions.length - 1 ? 'Next question →' : 'See results →'}
+      </button>
+    </div>
+    <div class="explanation" id="expl">${q.explain}</div>
+  `;
+  if (revealed) applyReveal();
+  if (selected >= 0) markSelected();
+}
+
+function selectOpt(i) {
+  if (revealed) return;
+  selected = i;
+  document.querySelectorAll('.opt-btn').forEach((b, idx) => {
+    if (idx === i) b.classList.add('selected');
+    else b.classList.remove('selected');
+  });
+}
+
+
+function revealAnswer() {
+  if (revealed) return;
+  revealed = true;
+  const q = questions[current];
+  if (selected === q.answer) score++;
+  applyReveal();
+  document.getElementById('btn-reveal').disabled = true;
+  document.getElementById('btn-reveal').textContent = 'Answer shown';
+  document.getElementById('expl').style.display = 'block';
+}
+
+function applyReveal() {
+  const q = questions[current];
+  document.querySelectorAll('.opt-btn').forEach((b, i) => {
+    b.disabled = true;
+    // remove pre-reveal selected styling so correct/wrong looks clean
+    b.classList.remove('selected');
+
+    if (i === q.answer) b.classList.add('correct');
+    else if (i === selected && selected !== q.answer) b.classList.add('wrong');
+  });
+}
+
+
+function markSelected() {
+  if (selected < 0) return;
+  const b = document.getElementById('opt' + selected);
+  if (b) { b.style.background = 'var(--color-background-secondary)'; b.style.borderColor = 'var(--color-border-primary)'; }
+}
+
+function nextQ() {
+  current++;
+  revealed = false;
+  selected = -1;
+  render();
+}
+
+function renderScore(area) {
+  const pct = Math.round((score / questions.length) * 100);
+  let badge = pct >= 80
+    ? `<div class="score-badge badge-great"><i class="ti ti-trophy" aria-hidden="true"></i> Excellent — Cybersecurity pro!</div>`
+    : pct >= 50
+    ? `<div class="score-badge badge-good"><i class="ti ti-thumb-up" aria-hidden="true"></i> Good effort — keep practising!</div>`
+    : `<div class="score-badge badge-retry"><i class="ti ti-refresh" aria-hidden="true"></i> Review the slides and try again!</div>`;
+  area.innerHTML = `
+    <div class="score-screen">
+      <div style="font-size:14px;color:var(--color-text-secondary);margin-bottom:8px">Final score</div>
+      <div class="score-big">${score}<span style="font-size:28px;color:var(--color-text-secondary)">/${questions.length}</span></div>
+      <div class="score-sub">${pct}% correct</div>
+      ${badge}
+      <br>
+      <button class="btn-restart" onclick="restart()"><i class="ti ti-refresh" aria-hidden="true"></i> Restart quiz</button>
+    </div>`;
+}
+
+function restart() {
+  current = 0; revealed = false; score = 0; selected = -1;
+  render();
+}
+
+render();
+</script>

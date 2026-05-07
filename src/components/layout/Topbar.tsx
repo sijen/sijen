@@ -11,6 +11,7 @@ const searchIndex = [
   { label: "Skills",             path: "/skills",     section: "Main",       keywords: "tech stack tools languages" },
   { label: "Leo Club",           path: "/leo",        section: "Volunteer",  keywords: "leo lions volunteer community service" },
   { label: "Certifications",     path: "/certs",      section: "Security",   keywords: "az-500 sc-200 comptia microsoft azure certs" },
+  { label: "Quiz",              path: "/quiz",       section: "Security",   keywords: "cybersecurity awareness quiz" },
   { label: "Security Lab",       path: "/lab",        section: "Security",   keywords: "tools demos ctf hacking analyzer" },
   { label: "Blog & Writeups",    path: "/blog",       section: "Security",   keywords: "articles posts ctf writeups" },
   { label: "Contact",            path: "/contact",    section: "Other",      keywords: "email reach out hire" },

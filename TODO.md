@@ -1,8 +1,5 @@
-# TODO - Click to Display Threat News
+- [ ] Update embedded quiz HTML styles in public/quiz/cybersec_quiz_presenter.html to improve font contrast against background
+- [ ] Update option selection UI in cybersec quiz HTML so selected option is visually distinct immediately
+- [ ] Update incorrect/correct option styling as needed so selection + reveal works together
+- [ ] Verify by running/building app (npm test/build) and manually checking /quiz in browser
 
-## Plan Steps:
-1. [x] Update ThreatGlobe.tsx - Add click detection with onClick callback
-2. [x] Update Lab/index.tsx - Show news on click (not just hover)
-3. [ ] Test and verify the implementation
-
-Current Status: Testing

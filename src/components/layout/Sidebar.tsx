@@ -20,6 +20,7 @@ const navSections = [
     label: "SECURITY",
     items: [
       { icon: "🏆", label: "Certifications", path: "/certs" },
+      { icon: "🧠", label: "Quiz", path: "/quiz" },
       { icon: "🔬", label: "Security Lab", path: "/lab" },
       { icon: "📝", label: "Blog / Writeups", path: "/blog" },
     ],
